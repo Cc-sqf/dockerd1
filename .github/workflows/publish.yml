@@ -62,10 +62,9 @@ jobs:
       run: |
         cd termux-packages
         patch -p1 < ../patches/docker.patch
-        export TERMUX_NDK_VERSION=26c
         version="${{ env.DOCKER_VERSION }}"
         sed -i "s|^TERMUX_PKG_VERSION=.*|TERMUX_PKG_VERSION=${version#v}|" root-packages/docker/build.sh
-        ./scripts/run-docker.sh ./build-package.sh -i --format pacman docker docker-compose docker-buildx
+        export TERMUX_NDK_VERSION=26c ./scripts/run-docker.sh ./build-package.sh -i --format pacman docker docker-compose docker-buildx
         cd output
         bash ../../package_docker.sh
         mv docker.tar.xz ../../module/docker.tar.xz
