@@ -64,7 +64,6 @@ jobs:
         patch -p1 < ../patches/docker.patch
         version="${{ env.DOCKER_VERSION }}"
         sed -i "s|^TERMUX_PKG_VERSION=.*|TERMUX_PKG_VERSION=${version#v}|" root-packages/docker/build.sh
-        sed -i '1iTERMUX_NDK_VERSION=26c' root-packages/docker/build.sh
         ./scripts/run-docker.sh ./build-package.sh -i --format pacman docker docker-compose docker-buildx
         cd output
         bash ../../package_docker.sh
@@ -100,7 +99,6 @@ jobs:
       run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-
     - name: Push updated files to Main branch
       run: |
           echo '{
@@ -118,7 +116,6 @@ jobs:
             git tag ${{ env.version }}
             git push origin ${{ env.version }} -f
           fi
-
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v2
@@ -133,4 +130,3 @@ jobs:
         name: ${{ env.version }}
         tag_name: ${{ env.version }}
         draft: ${{ inputs.force == false }}
-
